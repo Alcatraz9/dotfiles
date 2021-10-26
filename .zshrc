@@ -80,6 +80,7 @@ SOLARIZED_THEME="dark"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git ssh-agent archlinux command-not-found safe-paste sudo zsh-autosuggestions zsh-syntax-highlighting)
 
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 source $ZSH/oh-my-zsh.sh
 
 # User configuration

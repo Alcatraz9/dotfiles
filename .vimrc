@@ -14,7 +14,7 @@ Plugin 'https://github.com/tpope/vim-fugitive'
 Plugin 'scrooloose/nerdtree'
 Plugin 'mattn/emmet-vim'
 Plugin 'bling/vim-airline'
-Plugin 'Syntastic'
+Plugin 'vim-syntastic/syntastic' 
 Plugin 'junegunn/fzf.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'mg979/vim-visual-multi'
@@ -233,6 +233,21 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
+
+" Custom keymaps
+nnoremap <F5> :UndotreeToggle<CR>
+
+" Start NERDTree and put the cursor back in the other window.
+autocmd VimEnter * NERDTree | wincmd p
+" Exit Vim if NERDTree is the only window remaining in the only tab.
+autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+" syntastic
+let g:syntastic_javascript_checkers=['eslint']
+let g:syntastic_check_on_open=1
+let g:syntastic_enable_signs=1
+execute pathogen#infect()
+
 " custom
 syntax on
 set relativenumber
@@ -251,4 +266,4 @@ set incsearch
 set scrolloff=8
 set signcolumn=yes
 set colorcolumn=80
-nnoremap <F5> :UndotreeToggle<CR>
+
