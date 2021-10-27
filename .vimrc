@@ -14,7 +14,6 @@ Plugin 'https://github.com/tpope/vim-fugitive'
 Plugin 'scrooloose/nerdtree'
 Plugin 'mattn/emmet-vim'
 Plugin 'bling/vim-airline'
-Plugin 'vim-syntastic/syntastic' 
 Plugin 'junegunn/fzf.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'mg979/vim-visual-multi'
@@ -234,19 +233,39 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
 
-" Custom keymaps
+" Custom
+
+" UndoTree config
 nnoremap <F5> :UndotreeToggle<CR>
 
+" ALE Config
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))    
+    
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors    
+    
+    return l:counts.total == 0 ? 'OK' : printf(
+        \   '%d⨉ %d⚠ ',
+        \   all_non_errors,
+        \   all_errors
+        \)
+endfunction
+set statusline+=%=
+set statusline+=\ %{LinterStatus()}
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_enter = 0
+
+" FZF.vim Config
+nnoremap <silent> <C-f> :Files<CR>
+nnoremap <silent> <Leader>f :Rg<CR>
+set grepprg=rg\ --vimgrep\ --smart-case\ --follow
+
+" NERDTree config
 " Start NERDTree and put the cursor back in the other window.
 autocmd VimEnter * NERDTree | wincmd p
 " Exit Vim if NERDTree is the only window remaining in the only tab.
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-
-" syntastic
-let g:syntastic_javascript_checkers=['eslint']
-let g:syntastic_check_on_open=1
-let g:syntastic_enable_signs=1
-execute pathogen#infect()
 
 " custom
 syntax on
